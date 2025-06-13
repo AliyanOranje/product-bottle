@@ -1,14 +1,94 @@
-<div className="product grid-item">
-    <div>
-        test
-    </div>
+<div class="isolate{% unless section.settings.full_width %} page-width{% endunless %}">
+    <product-grid>
+        <div class="product-grid-m-div">
+            {% if section.blocks.size > 0 %}
+                <div class="product-grid-row">
+                    {% for block in section.blocks %}
+                    {% assign showcase_product = all_products[block.settings.product_handle] %}
+                        {% if showcase_product %}
+                        <div class="product-grid-item">
+                            <div class="product-image-m-div">
+                                <img src="https://cdn.shopify.com/s/files/1/0726/6048/4132/files/KJx7tie6Sf74-FNs9CMQIY-xYpTH8jbLfe5XTnBFAG8.png?v=1747736002">
+
+                                <div class="hotspot" style="top: 25%; left: 40%;">
+                                    <div class="tooltip">
+                                        <div class="product-detial-tooltip">
+                                            <div class="product-image">
+                                                <a href="{{ showcase_product.url }}">
+                                                    <img class="prod-img" src="{{ showcase_product.featured_image | img_url: block.settings.image_size }}" alt="{{ showcase_product.title | escape }}">
+                                                </a>
+                                            </div>
+                                            <div class="product-det">
+                                                <a href="{{ showcase_product.url }}">
+                                                    <h6>{{ block.settings.heading | default: showcase_product.title }}Test</h6>
+                                                </a>
+                                                <span class="price"> {{ showcase_product.price | money }} $200</span>
+                                                <button class="add-t-cart">Add to Cart</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="hotspot" style="top: 60%; left: 70%;">
+                                    <span class="tooltip">Feature B</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </product-grid>
 </div>
+
+
+
+
+
+<script type="text/javascript">
+    document.querySelectorAll('.hotspot').forEach(hotspot => {
+        hotspot.addEventListener('click', e => {
+            hotspot.classList.toggle('active');
+
+            document.querySelectorAll('.hotspot').forEach(other => {
+                if (other !== hotspot) other.classList.remove('active');
+            });
+            e.stopPropagation();
+        });
+    });
+    document.addEventListener('click', () =>{
+        document.querySelectorAll('.hotspot.active').forEach(h => h.classList.remove('active'));
+    });
+</script>
+
 
 
 {% schema %}
 {
   "name": "product grid",
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "t:sections.rich-text.settings.full_width.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_item",
+      "name": "Product Item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product_handle",
+          "label": "Select product"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "product grid"
