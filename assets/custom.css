@@ -100,3 +100,10 @@ button.add-t-cart {
     width: fit-content;
     margin: 0px;
 }
+
+.product-image-m-div {
+    position: relative;
+}
+.product-image-m-div img {
+    width: -webkit-fill-available;
+}

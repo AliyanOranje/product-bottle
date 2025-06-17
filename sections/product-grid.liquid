@@ -8,9 +8,11 @@
                         {% if showcase_product %}
                         <div class="product-grid-item">
                             <div class="product-image-m-div">
-                                <img src="https://cdn.shopify.com/s/files/1/0726/6048/4132/files/KJx7tie6Sf74-FNs9CMQIY-xYpTH8jbLfe5XTnBFAG8.png?v=1747736002">
-
-                                <div class="hotspot" style="top: 25%; left: 40%;">
+                              {%- if block.settings.main_image !=blank -%}
+                                <img src="{{ block.settings.main_image  | image_url }}">
+                              {%- endif -%}
+                              {%- if block.settings.tooltip_product_handle_1 !=blank -%}
+                                <div class="hotspot" style="top: {{ block.settings.tooltip-item-1-top-bottom }}%; left: {{ block.settings.tooltip-item-1 }}%;">
                                     <div class="tooltip">
                                         <div class="product-detial-tooltip">
                                             <div class="product-image">
@@ -28,10 +30,50 @@
                                         </div>
                                     </div>
                                 </div>
+                              {%- endif -%}
 
-                                <div class="hotspot" style="top: 60%; left: 70%;">
-                                    <span class="tooltip">Feature B</span>
+
+                              {%- if block.settings.tooltip_product_handle_2 !=blank -%}
+                                <div class="hotspot" style="top: {{ block.settings.tooltip-item-2-top-bottom }}%; left: {{ block.settings.tooltip-item-2 }}%;">
+                                    <div class="tooltip">
+                                        <div class="product-detial-tooltip">
+                                            <div class="product-image">
+                                                <a href="{{ showcase_product.url }}">
+                                                    <img class="prod-img" src="{{ showcase_product.featured_image | img_url: block.settings.image_size }}" alt="{{ showcase_product.title | escape }}">
+                                                </a>
+                                            </div>
+                                            <div class="product-det">
+                                                <a href="{{ showcase_product.url }}">
+                                                    <h6>{{ block.settings.heading | default: showcase_product.title }}Test</h6>
+                                                </a>
+                                                <span class="price"> {{ showcase_product.price | money }} $200</span>
+                                                <button class="add-t-cart">Add to Cart</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                              {%- endif -%}
+                             
+                              {%- if block.settings.tooltip_product_handle_3 !=blank -%}
+                                <div class="hotspot" style="top: {{ block.settings.tooltip-item-3-top-bottom }}%; left: {{ block.settings.tooltip-item-3 }}%;">
+                                    <div class="tooltip">
+                                        <div class="product-detial-tooltip">
+                                            <div class="product-image">
+                                                <a href="{{ showcase_product.url }}">
+                                                    <img class="prod-img" src="{{ showcase_product.featured_image | img_url: block.settings.image_size }}" alt="{{ showcase_product.title | escape }}">
+                                                </a>
+                                            </div>
+                                            <div class="product-det">
+                                                <a href="{{ showcase_product.url }}">
+                                                    <h6>{{ block.settings.heading | default: showcase_product.title }}Test</h6>
+                                                </a>
+                                                <span class="price"> {{ showcase_product.price | money }} $200</span>
+                                                <button class="add-t-cart">Add to Cart</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              {%- endif -%}
 
                             </div>
                         </div>
@@ -82,30 +124,105 @@
       "name": "Product Item",
       "settings": [
         {
+          "type": "image_picker",
+          "id": "main_image",
+          "label": "Upload Image"
+        },
+        {
           "type": "product",
           "id": "product_handle",
           "label": "Select product"
+        },
+        {
+          "type": "header",
+          "content": "Tool Tip Item 1"
+        },
+        {
+          "type": "product",
+          "id": "tooltip_product_handle_1",
+          "label": "Select Tooltip product"
+        },
+        {
+          "type": "range",
+          "id": "tooltip-item-1",
+          "label": "Tool Tip Item 1 Left & Right",
+          "min": 0,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "tooltip-item-1-top-bottom",
+          "label": "Tool Tip Item 1 top & Bottom",
+          "min": 0,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Tool Tip Item 2"
+        },
+        {
+          "type": "product",
+          "id": "tooltip_product_handle_2",
+          "label": "Select Tooltip product"
+        },
+        {
+          "type": "range",
+          "id": "tooltip-item-2",
+          "label": "Tool Tip Item 2 Left & Right",
+          "min": 0,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "tooltip-item-2-top-bottom",
+          "label": "Tool Tip Item 2 top & Bottom",
+          "min": 0,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Tool Tip Item 3"
+        },
+        {
+          "type": "product",
+          "id": "tooltip_product_handle_3",
+          "label": "Select Tooltip product"
+        },
+        {
+          "type": "range",
+          "id": "tooltip-item-3",
+          "label": "Tool Tip Item 3 Left & Right",
+          "min": 0,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "tooltip-item-3-top-bottom",
+          "label": "Tool Tip Item 3 top & Bottom",
+          "min": 0,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "default": 20
         }
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "product grid"
-    }
-  ]
-}
-{% endschema %}
-
-<div class="product-bottle-grid">
-
-</div>
-
-
-{% schema %}
-{
-  "name": "product grid",
-  "settings": [],
   "presets": [
     {
       "name": "product grid"
