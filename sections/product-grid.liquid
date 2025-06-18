@@ -4,77 +4,233 @@
             {% if section.blocks.size > 0 %}
                 <div class="product-grid-row">
                     {% for block in section.blocks %}
-                    {% assign showcase_product = all_products[block.settings.product_handle] %}
-                        {% if showcase_product %}
+                    {%- assign tooltip_product_1 = all_products[block.settings.tooltip_product_handle_1] -%}
+                    {%- assign tooltip_product_2 = all_products[block.settings.tooltip_product_handle_2] -%}
+                    {%- assign tooltip_product_3 = all_products[block.settings.tooltip_product_handle_3] -%}
+
+
+                        {% if tooltip_product_1 %}
                         <div class="product-grid-item">
                             <div class="product-image-m-div">
                               {%- if block.settings.main_image !=blank -%}
                                 <img src="{{ block.settings.main_image  | image_url }}">
                               {%- endif -%}
-                              {%- if block.settings.tooltip_product_handle_1 !=blank -%}
-                                <div class="hotspot" style="top: {{ block.settings.tooltip-item-1-top-bottom }}%; left: {{ block.settings.tooltip-item-1 }}%;">
-                                    <div class="tooltip">
-                                        <div class="product-detial-tooltip">
-                                            <div class="product-image">
-                                                <a href="{{ showcase_product.url }}">
-                                                    <img class="prod-img" src="{{ showcase_product.featured_image | img_url: block.settings.image_size }}" alt="{{ showcase_product.title | escape }}">
-                                                </a>
-                                            </div>
-                                            <div class="product-det">
-                                                <a href="{{ showcase_product.url }}">
-                                                    <h6>{{ block.settings.heading | default: showcase_product.title }}Test</h6>
-                                                </a>
-                                                <span class="price"> {{ showcase_product.price | money }} $200</span>
-                                                <button class="add-t-cart">Add to Cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
+                              {%- if tooltip_product_1 != blank -%}
+                              <div class="tolltip-item-m-div">
+                                  <button class="tooltip-btn" style="top: {{ block.settings.tooltip-item-1-top-bottom }}%; left: {{ block.settings.tooltip-item-1 }}%;"></button>
+                                  <div class="tooltip-content" style="top: {{ block.settings.tooltip-item-1-top-bottom }}%; left: {{ block.settings.tooltip-item-1 }}%;">
+                                    <div class="product-detial-tooltip">
+                                      <div class="product-image">
+                                          <a href="{{ tooltip_product_1.url }}">
+                                            <img class="prod-img" src="{{ tooltip_product_1.featured_image | img_url: 'master' }}" alt="{{ tooltip_product_1.title | escape }}">  
+                                          </a>
+                                      </div>
+                                      <div class="product-det">
+                                          <a class="prod-title" href="{{ tooltip_product_1.url }}">
+                                            <h6>{{ tooltip_product_1.title }}</h6>
+                                          </a>
+
+                                          <span class="price"> {{ tooltip_product_1.price | money }}</span>
+
+                                          {% if tooltip_product_1.variants.size > 1 %}
+                                            <form method="post" action="/cart/add" id="add-to-cart-form-{{ tooltip_product_1.id }}" data-product-handle="{{ tooltip_product_1.handle }}">
+                                              {% for option in tooltip_product_1.options_with_values %}
+                                                <div class="product-option">
+                                                  <label>{{ option.name }}</label>
+
+                                                  {% if option.name == "Color" %}
+                                                    <!-- Color Swatches -->
+                                                    <div class="color-swatches">
+                                                      {% for value in option.values %}
+                                                        <div class="color-swt">
+                                                          <input type="radio" id="color-{{ value | handle }}" name="options[Color]" value="{{ value | escape }}" {% if forloop.first %}checked{% endif %}>
+                                                          <label for="color-{{ value | handle }}" style="background-color: {{ value | handle }}; display: inline-block;"></label>
+                                                        </div>
+                                                      {% endfor %}
+                                                    </div>
+                                                  {% else %}
+                                                    <!-- Other options (e.g., Size) as dropdown -->
+                                                    <select name="options[{{ option.name | escape }}]" id="size-{{ tooltip_product_1.id }}">
+                                                      {% for value in option.values %}
+                                                        <option value="{{ value | escape }}" {% if forloop.first %}selected{% endif %}>{{ value }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                  {% endif %}
+                                                </div>
+                                              {% endfor %}
+
+                                              {% if tooltip_product_1.available %}
+                                                <button type="submit" class="add-t-cart">Add to Cart</button>
+                                              {% else %}
+                                                <button class="add-t-cart" disabled>Out of Stock</button>
+                                              {% endif %}
+                                            </form>
+                                          {% else %}
+                                            <form method="post" action="/cart/add" id="add-to-cart-form-{{ tooltip_product_1.id }}" data-product-handle="{{ tooltip_product_1.handle }}">
+                                              {% if tooltip_product_1.available %}
+                                                <input type="hidden" name="id" value="{{ tooltip_product_1.variants.first.id }}">
+                                                <button type="submit" class="add-t-cart">Add to Cart</button>
+                                              {% else %}
+                                                <button class="add-t-cart" disabled>Out of Stock</button>
+                                              {% endif %}
+                                            </form>
+                                          {% endif %}
+                                      </div>
+                                  </div>
+                                  </div>
+                              </div>
+                              {%- endif -%}
+                              
+
+                              {%- if tooltip_product_2 != blank -%}
+                              <div class="tolltip-item-m-div">
+                                  <button class="tooltip-btn" style="top: {{ block.settings.tooltip-item-2-top-bottom }}%; left: {{ block.settings.tooltip-item-2 }}%;"></button>
+                                  <div class="tooltip-content" style="top: {{ block.settings.tooltip-item-2-top-bottom }}%; left: {{ block.settings.tooltip-item-2 }}%;">
+                                    <div class="product-detial-tooltip">
+                                      <div class="product-image">
+                                          <a href="{{ tooltip_product_2.url }}">
+                                            <img class="prod-img" src="{{ tooltip_product_2.featured_image | img_url: 'master' }}" alt="{{ tooltip_product_2.title | escape }}">  
+                                          </a>
+                                      </div>
+                                      <div class="product-det">
+                                          <a class="prod-title" href="{{ tooltip_product_2.url }}">
+                                            <h6>{{ tooltip_product_2.title }}</h6>
+                                          </a>
+
+                                          <span class="price"> {{ tooltip_product_2.price | money }}</span>
+
+                                          {% if tooltip_product_2.variants.size > 1 %}
+                                            <form method="post" action="/cart/add" id="add-to-cart-form-{{ tooltip_product_2.id }}" data-product-handle="{{ tooltip_product_2.handle }}">
+                                              {% for option in tooltip_product_2.options_with_values %}
+                                                <div class="product-option">
+                                                  <label>{{ option.name }}</label>
+                                                  
+                                                  {% if option.name == "Color" %}
+                                                    <!-- Color Swatches -->
+                                                    <div class="color-swatches">
+                                                      {% for value in option.values %}
+                                                        <div class="color-swt">
+                                                          <input 
+                                                            type="radio" 
+                                                            id="color-{{ value | handle }}" 
+                                                            name="options[Color]" 
+                                                            value="{{ value | escape }}"
+                                                            {% if forloop.first %}checked{% endif %}
+                                                          >
+                                                          <label for="color-{{ value | handle }}" style="background-color: {{ value | handle }}; display: inline-block;"></label>
+                                                        </div>
+                                                      {% endfor %}
+                                                    </div>
+                                                  {% else %}
+                                                    <!-- Other options (e.g., Size) as dropdown -->
+                                                    <select name="options[{{ option.name | escape }}]">
+                                                      {% for value in option.values %}
+                                                        <option value="{{ value | escape }}">{{ value }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                  {% endif %}
+                                                </div>
+                                              {% endfor %}
+
+
+                                              {% if tooltip_product_2.available %}
+                                                <input type="hidden" name="id" value="{{ tooltip_product_2.variants.first.id }}">
+                                                <button type="submit" class="add-t-cart">Add to Cart</button>
+                                              {% else %}
+                                              <button class="add-t-cart" disabled>Out of Stock</button>
+                                              {% endif %}
+                                            </form>
+                                          {% else %}
+                                            <form method="post" action="/cart/add" id="add-to-cart-form-{{ tooltip_product_2.id }}" data-product-handle="{{ tooltip_product_2.handle }}">
+                                              {% if tooltip_product_2.available %}
+                                                <input type="hidden" name="id" value="{{ tooltip_product_2.variants.first.id }}">
+                                                <button type="submit" class="add-t-cart">Add to Cart</button>
+                                              {% else %}
+                                                <button class="add-t-cart" disabled>Out of Stock</button>
+                                              {% endif %}
+                                            </form>
+                                          {% endif %}
+                                      </div>
+                                  </div>
+                                  </div>
+                              </div>
                               {%- endif -%}
 
 
-                              {%- if block.settings.tooltip_product_handle_2 !=blank -%}
-                                <div class="hotspot" style="top: {{ block.settings.tooltip-item-2-top-bottom }}%; left: {{ block.settings.tooltip-item-2 }}%;">
-                                    <div class="tooltip">
-                                        <div class="product-detial-tooltip">
-                                            <div class="product-image">
-                                                <a href="{{ showcase_product.url }}">
-                                                    <img class="prod-img" src="{{ showcase_product.featured_image | img_url: block.settings.image_size }}" alt="{{ showcase_product.title | escape }}">
-                                                </a>
-                                            </div>
-                                            <div class="product-det">
-                                                <a href="{{ showcase_product.url }}">
-                                                    <h6>{{ block.settings.heading | default: showcase_product.title }}Test</h6>
-                                                </a>
-                                                <span class="price"> {{ showcase_product.price | money }} $200</span>
-                                                <button class="add-t-cart">Add to Cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                              {%- endif -%}
-                             
-                              {%- if block.settings.tooltip_product_handle_3 !=blank -%}
-                                <div class="hotspot" style="top: {{ block.settings.tooltip-item-3-top-bottom }}%; left: {{ block.settings.tooltip-item-3 }}%;">
-                                    <div class="tooltip">
-                                        <div class="product-detial-tooltip">
-                                            <div class="product-image">
-                                                <a href="{{ showcase_product.url }}">
-                                                    <img class="prod-img" src="{{ showcase_product.featured_image | img_url: block.settings.image_size }}" alt="{{ showcase_product.title | escape }}">
-                                                </a>
-                                            </div>
-                                            <div class="product-det">
-                                                <a href="{{ showcase_product.url }}">
-                                                    <h6>{{ block.settings.heading | default: showcase_product.title }}Test</h6>
-                                                </a>
-                                                <span class="price"> {{ showcase_product.price | money }} $200</span>
-                                                <button class="add-t-cart">Add to Cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                              {%- endif -%}
+                              {%- if tooltip_product_3 != blank -%}
+                              <div class="tolltip-item-m-div">
+                                  <button class="tooltip-btn" style="top: {{ block.settings.tooltip-item-3-top-bottom }}%; left: {{ block.settings.tooltip-item-3 }}%;"></button>
+                                  <div class="tooltip-content" style="top: {{ block.settings.tooltip-item-3-top-bottom }}%; left: {{ block.settings.tooltip-item-3 }}%;">
+                                    <div class="product-detial-tooltip">
+                                      <div class="product-image">
+                                          <a href="{{ tooltip_product_3.url }}">
+                                            <img class="prod-img" src="{{ tooltip_product_3.featured_image | img_url: 'master' }}" alt="{{ tooltip_product_3.title | escape }}">  
+                                          </a>
+                                      </div>
+                                      <div class="product-det">
+                                          <a class="prod-title" href="{{ tooltip_product_3.url }}">
+                                            <h6>{{ tooltip_product_3.title }}</h6>
+                                          </a>
 
+                                          <span class="price"> {{ tooltip_product_3.price | money }}</span>
+
+                                          {% if tooltip_product_3.variants.size > 1 %}
+                                            <form method="post" action="/cart/add" id="add-to-cart-form-{{ tooltip_product_3.id }}" data-product-handle="{{ tooltip_product_3.handle }}">
+                                              {% for option in tooltip_product_3.options_with_values %}
+                                                <div class="product-option">
+                                                  <label>{{ option.name }}</label>
+                                                  
+                                                  {% if option.name == "Color" %}
+                                                    <!-- Color Swatches -->
+                                                    <div class="color-swatches">
+                                                      {% for value in option.values %}
+                                                        <div class="color-swt">
+                                                          <input 
+                                                            type="radio" 
+                                                            id="color-{{ value | handle }}" 
+                                                            name="options[Color]" 
+                                                            value="{{ value | escape }}"
+                                                            {% if forloop.first %}checked{% endif %}
+                                                          >
+                                                          <label for="color-{{ value | handle }}" style="background-color: {{ value | handle }}; display: inline-block;"></label>
+                                                        </div>
+                                                      {% endfor %}
+                                                    </div>
+                                                  {% else %}
+                                                    <!-- Other options (e.g., Size) as dropdown -->
+                                                    <select name="options[{{ option.name | escape }}]">
+                                                      {% for value in option.values %}
+                                                        <option value="{{ value | escape }}">{{ value }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                  {% endif %}
+                                                </div>
+                                              {% endfor %}
+
+
+                                              {% if tooltip_product_3.available %}
+                                                <input type="hidden" name="id" value="{{ tooltip_product_3.variants.first.id }}">
+                                                <button type="submit" class="add-t-cart">Add to Cart</button>
+                                              {% else %}
+                                              <button class="add-t-cart" disabled>Out of Stock</button>
+                                              {% endif %}
+                                            </form>
+                                          {% else %}
+                                            <form method="post" action="/cart/add" id="add-to-cart-form-{{ tooltip_product_3.id }}" data-product-handle="{{ tooltip_product_3.handle }}">
+                                              {% if tooltip_product_3.available %}
+                                                <input type="hidden" name="id" value="{{ tooltip_product_3.variants.first.id }}">
+                                                <button type="submit" class="add-t-cart">Add to Cart</button>
+                                              {% else %}
+                                                <button class="add-t-cart" disabled>Out of Stock</button>
+                                              {% endif %}
+                                            </form>
+                                          {% endif %}
+                                      </div>
+                                  </div>
+                                  </div>
+                              </div>
+                              {%- endif -%}
                             </div>
                         </div>
                         {% endif %}
@@ -86,25 +242,136 @@
 </div>
 
 
+<script>
+  class ProductGrid extends HTMLElement {
+    constructor() {
+      super();
+      this.setupAddToCart();
+    }
+
+    setupAddToCart() {
+      // Event listener for all "Add to Cart" buttons
+      const addToCartButtons = this.querySelectorAll('.add-t-cart');
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+          event.preventDefault(); // Prevent default form submission
+
+          const form = button.closest('form');
+          const color = form.querySelector('input[name="options[Color]"]:checked');
+          const size = form.querySelector('select[name="options[Size]"]');
+
+          if (color && size) {
+            const selectedColor = color.value;
+            const selectedSize = size.value;
+
+            // Get the product handle from the form dataset (ensure it's set)
+            const productHandle = form.dataset.productHandle;  // Use product handle instead of ID
+
+            // Fetch the product data
+            this.fetchProductData(productHandle)
+              .then(product => {
+                const variantId = this.getVariantId(selectedColor, selectedSize, product);
+                if (variantId) {
+                  this.addToCart(variantId);
+                } else {
+                  alert("Variant not found.");
+                }
+              })
+              .catch(error => {
+                alert("Error fetching product data: " + error.message);
+              });
+          }
+        });
+      });
+    }
+
+    // Helper function to fetch product data from Shopify using the product handle
+    fetchProductData(productHandle) {
+      return new Promise((resolve, reject) => {
+        // Construct the correct URL for the Shopify product API
+        const productUrl = `/products/${productHandle}.js`;  // Correct URL for product handle
+
+        fetch(productUrl)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Error fetching product data: ${response.statusText}`);
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(product => {
+            resolve(product);
+          })
+          .catch(error => {
+            reject('Error fetching product data: ' + error.message);
+          });
+      });
+    }
+
+    // Helper function to find the correct variant ID
+    getVariantId(color, size, product) {
+      for (const variant of product.variants) {
+        if (variant.options.includes(color) && variant.options.includes(size)) {
+          return variant.id;
+        }
+      }
+      return null; // Variant not found
+    }
+
+    // Function to add the selected item to the cart
+    addToCart(variantId) {
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: [{
+            id: variantId,
+            quantity: 1
+          }]
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert("Product added to the cart successfully!");  // Show success message
+      })
+      .catch(error => {
+        alert("Error adding to cart: " + error.message);  // Show error message
+      });
+    }
+  }
+
+  if (!customElements.get('product-grid')) {
+    customElements.define('product-grid', ProductGrid);
+  }
+</script>
 
 
 
-<script type="text/javascript">
-    document.querySelectorAll('.hotspot').forEach(hotspot => {
-        hotspot.addEventListener('click', e => {
-            hotspot.classList.toggle('active');
 
-            document.querySelectorAll('.hotspot').forEach(other => {
-                if (other !== hotspot) other.classList.remove('active');
+
+
+
+<script>
+    document.querySelectorAll('.tooltip-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const tooltip = e.target.nextElementSibling;
+            const isTooltipActive = tooltip.classList.contains('active');
+            
+            document.querySelectorAll('.tooltip-content').forEach(t => {
+                t.classList.remove('active');
             });
+            
+            if(!isTooltipActive){
+              tooltip.classList.add('active');
+            } else {
+              tooltip.classList.remove('active');
+            }
+
             e.stopPropagation();
         });
     });
-    document.addEventListener('click', () =>{
-        document.querySelectorAll('.hotspot.active').forEach(h => h.classList.remove('active'));
-    });
 </script>
-
 
 
 {% schema %}
@@ -127,11 +394,6 @@
           "type": "image_picker",
           "id": "main_image",
           "label": "Upload Image"
-        },
-        {
-          "type": "product",
-          "id": "product_handle",
-          "label": "Select product"
         },
         {
           "type": "header",
